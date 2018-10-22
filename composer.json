@@ -1,0 +1,40 @@
+{
+    "name": "root-zone/ssh",
+    "description": "SSH Library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "René Halberstadt",
+            "email": "rene@halberstadt.ws"
+        }
+    ],
+    "homepage": "https://repo.root-zone.info/PHP/halberstadt-stdlibs",
+    "license": "cc-by-sa 4.0",
+    "support": {
+        "docs": "https://repo.root-zone.info/PHP/halberstadt-stdlibs/wiki",
+        "issue": "https://repo.root-zone.info/PHP/halberstadt-stdlibs/issue"
+    },
+    "require": {
+        "php": "^5.6 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RootZone\\ssh\\": "src/"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Halberstadt\\Stdlib\\": "src/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --coverage-clover clover.xml"
+    }
+}

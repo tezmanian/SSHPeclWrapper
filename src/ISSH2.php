@@ -1,38 +1,37 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2;
+namespace Tez\PHPssh2;
 
-use RootZone\SSH2\Auth\ISSH2Credentials;
-use RootZone\SSH2\Exception\SSH2Exception;
-use RootZone\SSH2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Auth\ISSH2Credentials;
+use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
 
 /**
- *
- * @author halberstadt
+ * Interface ISSH2
+ * @package Tez\PHPssh2
  */
 interface ISSH2
 {
 
-  /**
-   *
-   * @param ICredentials $credentials
-   * @throws SSH2Exception
-   */
-  public function authentication(ISSH2Credentials $credentials);
+    /**
+     * @param ISSH2Credentials $credentials
+     * @return ISSH2
+     */
+    public function authentication(ISSH2Credentials $credentials): ISSH2;
 
-  /**
-   *
-   */
-  public function getConnection();
+    /**
+     * @return mixed
+     */
+    public function getConnection();
 
-  /**
-   * return ISSH2ConnectionRessource
-   */
-  public function getConnectionResource(): ISSH2ConnectionRessource;
+    /**
+     * @return ISSH2ConnectionRessource
+     */
+    public function getConnectionResource(): ISSH2ConnectionRessource;
 }

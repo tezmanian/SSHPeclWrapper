@@ -1,19 +1,31 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
-namespace RootZone\SSH2\Exception;
+
+namespace Tez\PHPssh2\Exception;
 
 use Exception;
+use Throwable;
 
 /**
- * Description of SSH2Exception
- *
- * @author halberstadt
+ * Class SSH2Exception
+ * @package Tez\PHPssh2\Exception
  */
 class SSH2Exception extends Exception
 {
+    /**
+     * SSH2Exception constructor.
+     * @param string $message
+     * @param int $code
+     * @param Throwable|null $previous
+     */
+    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

@@ -1,67 +1,89 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2;
+namespace Tez\PHPssh2;
 
-use RootZone\SSH2\Auth\ISSH2Credentials;
-use RootZone\SSH2\Connection\ISSH2Connection;
-use RootZone\SSH2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Auth\ISSH2Credentials;
+use Tez\PHPssh2\Connection\ISSH2Connection;
+use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Exception\SSH2Exception;
 
 /**
- * Description of SSH
- *
- * @author halberstadt
+ * Class SSH2
+ * @package Tez\PHPssh2
  */
 class SSH2 implements ISSH2
 {
 
-  /**
-   *
-   * @var ISSH2ConnectionRessource
-   */
-  private $_connectionResource = NULL;
+    /**
+     *
+     * @var ISSH2ConnectionRessource|NULL
+     */
+    private $_connectionResource = null;
 
-  public function __construct(ISSH2Connection $connection, ISSH2Credentials $credentials)
-  {
-    $this->_checkSSH2Extension();
-    $this->_connectionResource = $connection->connect();
-    $this->authentication($credentials);
-  }
-
-  public function authentication(ISSH2Credentials $credentials)
-  {
-    $credentials->authenticate($this->_connection);
-  }
-
-  private function _checkSSH2Extension()
-  {
-    if (FALSE === extension_loaded("ssh2"))
+    /**
+     * SSH2 constructor.
+     * @param ISSH2Connection $connection
+     * @param ISSH2Credentials $credentials
+     * @throws Exception\SSH2AuthenticationException
+     * @throws SSH2Exception
+     */
+    public function __construct(ISSH2Connection $connection, ISSH2Credentials $credentials)
     {
-      throw new SSH2Exception("SSH2 extension is not loaded");
+        $this->_checkSSH2Extension();
+        $this->_connectionResource = $connection->connect();
+        $this->authentication($credentials);
     }
-  }
 
-  /**
-   *
-   * @return \Resource
-   */
-  public function getConnection()
-  {
-    return $this->_connectionResource->getConnection();
-  }
+    /**
+     * check if ssh2 extension is loaded
+     *
+     * @throws SSH2Exception
+     */
+    private function _checkSSH2Extension(): void
+    {
+        if (false === extension_loaded("ssh2"))
+        {
+            throw new SSH2Exception("SSH2 extension is not loaded");
+        }
+    }
 
-  /**
-   *
-   * @return ISSH2ConnectionRessource
-   */
-  public function getConnectionResource()
-  {
-    return $this->_connectionResource;
-  }
+    /**
+     * authenticate the session
+     * @param ISSH2Credentials $credentials
+     * @return ISSH2
+     * @throws Exception\SSH2AuthenticationException
+     */
+    public function authentication(ISSH2Credentials $credentials): ISSH2
+    {
+        $credentials->authenticate($this->getConnectionResource());
+        return $this;
+    }
+
+    /**
+     * returns the ssh2 connection
+     *
+     * @return mixed
+     */
+    public function getConnection()
+    {
+        return $this->_connectionResource->getConnection();
+    }
+
+    /**
+     * returns a connection resource
+     *
+     * @return ISSH2ConnectionRessource
+     */
+    public function getConnectionResource(): ISSH2ConnectionRessource
+    {
+        return $this->_connectionResource;
+    }
 
 }

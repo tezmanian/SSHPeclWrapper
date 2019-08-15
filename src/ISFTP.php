@@ -1,22 +1,24 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2;
+namespace Tez\PHPssh2;
 
 /**
- *
- * @author halberstadt
+ * Interface ISFTP
+ * @package Tez\PHPssh2
  */
 interface ISFTP
 {
-  /**
-   *
-   * @param \RootZone\SSH2\ISSH2 $ssh2
-   */
-  public function setSSH2Connection(ISSH2 $ssh2);
+
+    /**
+     * @param ISSH2 $ssh2
+     * @return ISFTP
+     */
+    public function setSSH2Connection(ISSH2 $ssh2): ISFTP;
 }

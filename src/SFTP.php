@@ -1,31 +1,43 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2;
+namespace Tez\PHPssh2;
 
 /**
- * Description of SFTP
- *
- * @author halberstadt
+ * Class SFTP
+ * @package Tez\PHPssh2
  */
 class SFTP implements ISFTP
 {
 
-  protected $_ssh2 = null;
+    /**
+     * @var mixed
+     */
+    protected $_ssh2 = null;
 
-  public function __construct(ISSH2 $ssh2)
-  {
-    $this->setSSH2Connection($ssh2);
-  }
+    /**
+     * SFTP constructor.
+     * @param ISSH2 $ssh2
+     */
+    public function __construct(ISSH2 $ssh2)
+    {
+        $this->setSSH2Connection($ssh2);
+    }
 
-  public function setSSH2Connection(ISSH2 $ssh2)
-  {
-    $this->_ssh2 = $ssh2;
-  }
+    /**
+     * @param ISSH2 $ssh2
+     * @return ISFTP
+     */
+    public function setSSH2Connection(ISSH2 $ssh2): ISFTP
+    {
+        $this->_ssh2 = $ssh2;
+        return $this;
+    }
 
 }

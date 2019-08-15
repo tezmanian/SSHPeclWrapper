@@ -1,52 +1,54 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2\Connection;
+namespace Tez\PHPssh2\Connection;
 
 /**
- * Description of SSH2ConnectionRessource
- *
- * @author halberstadt
+ * Class SSH2ConnectionRessource
+ * @package Tez\PHPssh2\Connection
  */
 class SSH2ConnectionRessource implements ISSH2ConnectionRessource
 {
 
-  /**
-   *
-   * @var \SSH2Ressource
-   */
-  private $_resource = NULL;
+    /**
+     *
+     * resource
+     */
+    private $_resource = null;
 
-  /**
-   *
-   * @param \SSH2Ressource $resource
-   */
-  public function __construct(\SSH2Ressource $resource)
-  {
-    $this->setConnection($resource);
-  }
+    /**
+     * SSH2ConnectionRessource constructor.
+     * @param $resource
+     */
+    public function __construct($resource)
+    {
+        $this->setConnection($resource);
+    }
 
-  /**
-   *
-   * @return \SSH2Ressource
-   */
-  public function getConnection(): \SSH2Ressource
-  {
-    return $this->_resource;
-  }
+    /**
+     * set connection
+     *
+     * @param $resource
+     */
+    protected function setConnection($resource)
+    {
+        $this->_resource = $resource;
+    }
 
-  /**
-   *
-   * @param \SSH2Ressource $resource
-   */
-  protected function setConnection(\SSH2Ressource $resource)
-  {
-    $this->_resource = $resource;
-  }
+    /**
+     * get SSH2Ressource
+     *
+     * @return null
+     */
+    public function getConnection()
+    {
+        return $this->_resource;
+    }
 
 }

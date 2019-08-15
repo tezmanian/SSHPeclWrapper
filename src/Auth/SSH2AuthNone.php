@@ -1,71 +1,77 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ *
+ * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace RootZone\SSH2\Auth;
+namespace Tez\PHPssh2\Auth;
 
-use RootZone\SSH2\Connection\ISSH2ConnectionRessource;
-use RootZone\SSH2\Exception\SSH2AuthenticationException;
+use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Exception\SSH2AuthenticationException;
 
 /**
- * Description of SSH2AuthNone
- *
- * @author halberstadt
+ * Class SSH2AuthNone
+ * @package Tez\PHPssh2\Auth
  */
 class SSH2AuthNone implements ISSH2Credentials
 {
 
-  /**
-   *
-   * @var string
-   */
-  private $_username;
-
-  /**
-   *
-   * @param string $username
-   */
-  public function __construct(string $username)
-  {
-    $this->setUsername($username);
-  }
+    /**
+     *
+     * @var string
+     */
+    private $_username;
 
 
-  /**
-   *
-   * @param ISSH2ConnectionRessource $connection
-   * @throws SSH2AuthenticationException
-   */
-  public function authenticate(ISSH2ConnectionRessource $connection)
-  {
-    $auth = ssh2_auth_none ($connection->getConnection(), $this->getUsername());
-
-    if ($auth !== true)
+    /**
+     * SSH2AuthNone constructor.
+     *
+     * @param string $username
+     */
+    public function __construct(string $username)
     {
-      throw new SSH2AuthenticationException(sprintf('Authentication not successful, following methods allowed: %s', implode($auth)));
+        $this->setUsername($username);
     }
-  }
 
-  /**
-   *
-   * @param string $username
-   */
-  public function setUsername(string $username)
-  {
-    $this->_username = $username;
-  }
 
-  /**
-   *
-   * @return string
-   */
-  public function getUsername() : string
-  {
-    return $this->_username;
-  }
+    /**
+     *
+     * @param ISSH2ConnectionRessource $connection
+     * @throws SSH2AuthenticationException
+     */
+    public function authenticate(ISSH2ConnectionRessource $connection): void
+    {
+        $auth = ssh2_auth_none($connection->getConnection(), $this->getUsername());
+
+        if ($auth !== true)
+        {
+            throw new SSH2AuthenticationException(sprintf('Authentication not successful, following methods allowed: %s', implode($auth)));
+        }
+    }
+
+    /**
+     * Get login username
+     *
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->_username;
+    }
+
+    /**
+     * Set username to login
+     *
+     * @param string $username
+     * @return SSH2AuthNone
+     */
+    public function setUsername(string $username): SSH2AuthNone
+    {
+        $this->_username = $username;
+        return $this;
+    }
 
 }

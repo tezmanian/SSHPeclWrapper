@@ -9,7 +9,7 @@
 
 namespace Tez\PHPssh2\Auth;
 
-use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
 
 /**
@@ -23,7 +23,7 @@ class SSH2AuthNone implements ISSH2Credentials
      *
      * @var string
      */
-    private $_username;
+    private $_username = null;
 
 
     /**
@@ -31,18 +31,22 @@ class SSH2AuthNone implements ISSH2Credentials
      *
      * @param string $username
      */
-    public function __construct(string $username)
+    public function __construct(string $username = null)
     {
-        $this->setUsername($username);
+        if (!is_null($username))
+        {
+            $this->setUsername($username);
+        }
+
     }
 
 
     /**
      *
-     * @param ISSH2ConnectionRessource $connection
+     * @param ISSH2ConnectionResource $connection
      * @throws SSH2AuthenticationException
      */
-    public function authenticate(ISSH2ConnectionRessource $connection): void
+    public function authenticate(ISSH2ConnectionResource $connection): void
     {
         $auth = ssh2_auth_none($connection->getConnection(), $this->getUsername());
 
@@ -56,9 +60,14 @@ class SSH2AuthNone implements ISSH2Credentials
      * Get login username
      *
      * @return string
+     * @throws SSH2AuthenticationException
      */
     public function getUsername(): string
     {
+        if (empty($this->_username) || is_null($this->_username))
+        {
+            throw new SSH2AuthenticationException('Missing username');
+        }
         return $this->_username;
     }
 

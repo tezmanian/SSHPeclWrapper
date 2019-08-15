@@ -11,8 +11,10 @@ namespace Tez\PHPssh2;
 
 use Tez\PHPssh2\Auth\ISSH2Credentials;
 use Tez\PHPssh2\Connection\ISSH2Connection;
-use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2Exception;
+use Tez\PHPssh2\SFTP\ISFTP;
+use Tez\PHPssh2\SFTP\SFTP;
 
 /**
  * Class SSH2
@@ -23,7 +25,7 @@ class SSH2 implements ISSH2
 
     /**
      *
-     * @var ISSH2ConnectionRessource|NULL
+     * @var ISSH2ConnectionResource|NULL
      */
     private $_connectionResource = null;
 
@@ -79,11 +81,25 @@ class SSH2 implements ISSH2
     /**
      * returns a connection resource
      *
-     * @return ISSH2ConnectionRessource
+     * @return ISSH2ConnectionResource
      */
-    public function getConnectionResource(): ISSH2ConnectionRessource
+    public function getConnectionResource(): ISSH2ConnectionResource
     {
         return $this->_connectionResource;
+    }
+
+    private function getSSH2(): ISSH2
+    {
+        return $this;
+    }
+
+    /**
+     * returns a SFTP connection
+     * @return ISFTP
+     */
+    public function getSFTP(): ISFTP
+    {
+        return new SFTP($this->getSSH2());
     }
 
 }

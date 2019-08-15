@@ -9,7 +9,7 @@
 
 namespace Tez\PHPssh2\Auth;
 
-use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
 
 /**
@@ -111,10 +111,10 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
     /**
      * Key authentication method
      *
-     * @param ISSH2ConnectionRessource $connection
+     * @param ISSH2ConnectionResource $connection
      * @throws SSH2AuthenticationException
      */
-    public function authenticate(ISSH2ConnectionRessource $connection): void
+    public function authenticate(ISSH2ConnectionResource $connection): void
     {
         parent::authenticate($connection);
     }

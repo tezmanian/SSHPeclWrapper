@@ -52,10 +52,10 @@ interface ISSH2Connection
     public function setPort(int $port): ISSH2Connection;
 
     /**
-     * Returns a SSH2ConnectionRessource
+     * Returns a SSH2ConnectionResource
      *
-     * return SSH2ConnectionRessource
+     * return SSH2ConnectionResource
      * @throws SSH2ConnectionException
      */
-    public function connect(): ISSH2ConnectionRessource;
+    public function connect(): ISSH2ConnectionResource;
 }

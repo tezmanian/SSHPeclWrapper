@@ -10,7 +10,8 @@
 namespace Tez\PHPssh2;
 
 use Tez\PHPssh2\Auth\ISSH2Credentials;
-use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
+use Tez\PHPssh2\SFTP\ISFTP;
 
 /**
  * Interface ISSH2
@@ -31,7 +32,15 @@ interface ISSH2
     public function getConnection();
 
     /**
-     * @return ISSH2ConnectionRessource
+     * returns a ISSH2ConnectionResource
+     * @return ISSH2ConnectionResource
      */
-    public function getConnectionResource(): ISSH2ConnectionRessource;
+    public function getConnectionResource(): ISSH2ConnectionResource;
+
+    /**
+     * returns a sftp connection
+     *
+     * @return ISFTP
+     */
+    public function getSFTP(): ISFTP;
 }

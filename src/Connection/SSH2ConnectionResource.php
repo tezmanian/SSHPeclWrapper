@@ -10,10 +10,10 @@
 namespace Tez\PHPssh2\Connection;
 
 /**
- * Class SSH2ConnectionRessource
+ * Class SSH2ConnectionResource
  * @package Tez\PHPssh2\Connection
  */
-class SSH2ConnectionRessource implements ISSH2ConnectionRessource
+class SSH2ConnectionResource implements ISSH2ConnectionResource
 {
 
     /**
@@ -23,7 +23,7 @@ class SSH2ConnectionRessource implements ISSH2ConnectionRessource
     private $_resource = null;
 
     /**
-     * SSH2ConnectionRessource constructor.
+     * SSH2ConnectionResource constructor.
      * @param $resource
      */
     public function __construct($resource)

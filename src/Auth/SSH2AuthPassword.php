@@ -9,7 +9,7 @@
 
 namespace Tez\PHPssh2\Auth;
 
-use Tez\PHPssh2\Connection\ISSH2ConnectionRessource;
+use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
 
 /**
@@ -23,7 +23,7 @@ class SSH2AuthPassword extends SSH2AuthNone
      *
      * @var string
      */
-    private $_password;
+    private $_password = null;
 
     /**
      * SSH2AuthPassword constructor.
@@ -31,7 +31,7 @@ class SSH2AuthPassword extends SSH2AuthNone
      * @param string $username
      * @param string $password
      */
-    public function __construct(string $username, string $password)
+    public function __construct(string $username = null, string $password = null)
     {
         parent::__construct($username);
         $this->setPassword($password);
@@ -43,7 +43,7 @@ class SSH2AuthPassword extends SSH2AuthNone
      * @param string $password
      * @return SSH2AuthPassword
      */
-    public function setPassword(string $password): SSH2AuthPassword
+    public function setPassword(string $password = null): SSH2AuthPassword
     {
         $this->_password = $password;
         return $this;
@@ -51,10 +51,10 @@ class SSH2AuthPassword extends SSH2AuthNone
 
     /**
      * Password authentication method
-     * @param ISSH2ConnectionRessource $connection
+     * @param ISSH2ConnectionResource $connection
      * @throws SSH2AuthenticationException
      */
-    public function authenticate(ISSH2ConnectionRessource $connection): void
+    public function authenticate(ISSH2ConnectionResource $connection): void
     {
         $auth = ssh2_auth_password($connection->getConnection(), $this->getUsername(), $this->getPassword());
 
@@ -68,9 +68,14 @@ class SSH2AuthPassword extends SSH2AuthNone
      * Get password
      *
      * @return string
+     * @throws SSH2AuthenticationException
      */
     private function getPassword(): string
     {
+        if (empty($this->_password) || is_null($this->_password))
+        {
+            throw new SSH2AuthenticationException('Missing password');
+        }
         return $this->_password;
     }
 

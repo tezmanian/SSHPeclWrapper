@@ -10,10 +10,10 @@
 namespace Tez\PHPssh2\Connection;
 
 /**
- * Interface ISSH2ConnectionRessource
+ * Interface ISSH2ConnectionResource
  * @package Tez\PHPssh2\Connection
  */
-interface ISSH2ConnectionRessource
+interface ISSH2ConnectionResource
 {
 
     /**

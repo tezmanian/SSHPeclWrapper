@@ -33,9 +33,12 @@ class SSH2Connection implements ISSH2Connection
      *
      * @param string $host
      */
-    public function __construct(string $host)
+    public function __construct(string $host = null)
     {
-        $this->setHost($host);
+        if (!is_null($host))
+        {
+            $this->setHost($host);
+        }
     }
 
     /**
@@ -53,10 +56,10 @@ class SSH2Connection implements ISSH2Connection
 
     /**
      * Connect to SSH2 server
-     * @return ISSH2ConnectionRessource
+     * @return ISSH2ConnectionResource
      * @throws SSH2ConnectionException
      */
-    public function connect(): ISSH2ConnectionRessource
+    public function connect(): ISSH2ConnectionResource
     {
 
 
@@ -65,7 +68,7 @@ class SSH2Connection implements ISSH2Connection
             throw new SSH2ConnectionException(sprintf("could not establish ssh connection to server %s at port %d", $this->getHost(), $this->getPort()));
         }
 
-        return new SSH2ConnectionRessource($connection);
+        return new SSH2ConnectionResource($connection);
     }
 
     /**

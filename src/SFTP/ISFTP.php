@@ -7,7 +7,9 @@
  * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace Tez\PHPssh2;
+namespace Tez\PHPssh2\SFTP;
+
+use Tez\PHPssh2\ISSH2;
 
 /**
  * Interface ISFTP

@@ -9,21 +9,11 @@
 
 namespace Tez\PHPssh2\Exception;
 
-use Exception;
+
 use Throwable;
 
-/**
- * Class SSH2Exception
- * @package Tez\PHPssh2\Exception
- */
-class SSH2Exception extends Exception
+class SSH2AuthenticationUsernameException extends SSH2AuthenticationException
 {
-    /**
-     * SSH2Exception constructor.
-     * @param string $message
-     * @param int $code
-     * @param Throwable|null $previous
-     */
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);

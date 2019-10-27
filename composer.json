@@ -1,35 +1,40 @@
 {
-    "name": "tez/php-ssh",
-    "description": "SSH Library",
-    "type": "library",
-    "authors": [
-        {
-            "name": "René Halberstadt",
-            "email": "tezmanian@gmail.com"
-        }
-    ],
-    "homepage": "https://github.com/tezmanian/PHP-ssh",
-    "license": "Apache-2.0",
-    "support": {
-        "docs": "https://repo.root-zone.info/PHP/halberstadt-stdlibs/wiki",
-        "issue": "https://repo.root-zone.info/PHP/halberstadt-stdlibs/issue"
-    },
-    "require": {
-        "php": "^7.2",
-        "ext-ssh2": "*",
-        "ext-openssl": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Tez\\PHPssh2\\": "src/"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": ">=5.7.27 <6.0.0 || >=6.5.8 <7.0.0 || >=7.1.2 <8.0.0",
-        "phpmd/phpmd": "2.7.0"
-    },
-    "scripts": {
-        "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --coverage-clover clover.xml"
+  "name": "tez/php-ssh",
+  "description": "SSH Library",
+  "type": "library",
+  "authors": [
+    {
+      "name": "René Halberstadt",
+      "email": "tezmanian@gmail.com"
     }
+  ],
+  "homepage": "https://github.com/tezmanian/SSHPeclWrapper",
+  "license": "Apache-2.0",
+  "support": {
+    "docs": "https://github.com/tezmanian/SSHPeclWrapper/wiki",
+    "issue": "https://github.com/tezmanian/SSHPeclWrapper/issues"
+  },
+  "require": {
+    "php": "^7.2",
+    "ext-ssh2": "*",
+    "ext-openssl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tez\\PHPssh2\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=5.7.27 <6.0.0 || >=6.5.8 <7.0.0 || >=7.1.2 <8.0.0",
+    "phpmd/phpmd": "2.7.0"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TezTest\\PHPssh2\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --coverage-clover clover.xml"
+  }
 }

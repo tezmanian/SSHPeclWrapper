@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
  * @copyright Copyright (c) 2016-2019 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
@@ -24,6 +24,7 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
      * @param string $username
      * @param string $keyfile
      * @param string|null $passphrase
+     * @throws SSH2AuthenticationException
      */
     public function __construct(string $username, string $keyfile, string $passphrase = null)
     {
@@ -33,6 +34,7 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
 
     /**
      * convert private key to public one
+     * @throws SSH2AuthenticationException
      */
     protected function convertPrivToPub(): void
     {
@@ -55,6 +57,7 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
 
     /**
      * create temp key file
+     * @throws SSH2AuthenticationException
      */
     private function createTempPubKeyName(): void
     {
@@ -95,6 +98,9 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
         return pack("Na*", $len, $buffer);
     }
 
+    /**
+     * @throws SSH2AuthenticationException
+     */
     public function __destruct()
     {
         $this->unlinkTempPubKey();
@@ -102,6 +108,7 @@ class SSH2AuthPrivKeyFile extends SSH2AuthPrivPubKeyFile
 
     /**
      * remove temp pub key
+     * @throws SSH2AuthenticationException
      */
     protected function unlinkTempPubKey(): void
     {

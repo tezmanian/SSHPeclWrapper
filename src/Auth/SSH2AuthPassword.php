@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
  * @copyright Copyright (c) 2016-2019 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
@@ -11,6 +11,7 @@ namespace Tez\PHPssh2\Auth;
 
 use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
+use Tez\PHPssh2\Exception\SSH2AuthenticationPasswordException;
 
 /**
  * Class SSH2AuthPassword
@@ -74,7 +75,7 @@ class SSH2AuthPassword extends SSH2AuthNone
     {
         if (empty($this->_password) || is_null($this->_password))
         {
-            throw new SSH2AuthenticationException('Missing password');
+            throw new SSH2AuthenticationPasswordException('Missing password');
         }
         return $this->_password;
     }

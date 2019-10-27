@@ -7,17 +7,17 @@
  * @license   https://opensource.org/licenses/Apache-2.0
  */
 
-namespace Tez\PHPssh2\Connection;
+namespace Tez\PHPssh2;
+
 
 /**
- * Interface ISSH2ConnectionResource
- * @package Tez\PHPssh2\Connection
+ * Interface ISSH2Resource
+ * @package Tez\PHPssh2
  */
-interface ISSH2ConnectionResource
+interface ISSH2Resource
 {
-
     /**
-     * Returns the SSH2Connection
+     * @param ISSH2 $ssh2
      */
-    public function getConnection();
+    public function setSSH2Connection(ISSH2 $ssh2): void;
 }

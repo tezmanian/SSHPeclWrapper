@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
  * @copyright Copyright (c) 2016-2019 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
@@ -11,6 +11,7 @@ namespace Tez\PHPssh2\Auth;
 
 use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
+use Tez\PHPssh2\Exception\SSH2AuthenticationUsernameException;
 
 /**
  * Class SSH2AuthNone
@@ -66,7 +67,7 @@ class SSH2AuthNone implements ISSH2Credentials
     {
         if (empty($this->_username) || is_null($this->_username))
         {
-            throw new SSH2AuthenticationException('Missing username');
+            throw new SSH2AuthenticationUsernameException('Missing username');
         }
         return $this->_username;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
  * @copyright Copyright (c) 2016-2019 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
@@ -19,9 +19,9 @@ class SSH2Connection implements ISSH2Connection
 {
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $_host = null;
+    private $_host = '';
 
     /**
      * @var int
@@ -49,9 +49,21 @@ class SSH2Connection implements ISSH2Connection
      * @param string $language
      * @throws SSH2ConnectionException
      */
-    public static function disconnectCallback($reason, $message, $language)
+    public function disconnectCallback($reason, $message, $language)
     {
         throw new SSH2ConnectionException(sprintf("Server disconnected with reason code [%d] and message: %s\n", $reason, $message));
+    }
+
+    /**
+     * Server callback on debug
+     *
+     * @param int $reason
+     * @param string $message
+     * @param string $language
+     */
+    public function debugCallback($reason, $message, $language)
+    {
+        error_log(sprintf("Debug: code [%d] and message: %s\n", $reason, $message));
     }
 
     /**
@@ -75,9 +87,12 @@ class SSH2Connection implements ISSH2Connection
      * returns the host
      *
      * @return string
+     * @throws SSH2ConnectionException
      */
     public function getHost(): string
     {
+        if (empty($this->_host)) throw new SSH2ConnectionException("Host is not set");
+
         return $this->_host;
     }
 
@@ -118,13 +133,15 @@ class SSH2Connection implements ISSH2Connection
      * Callbacks
      *
      * @return array
-     * @throws SSH2ConnectionException
      */
     private function getCallbacks()
     {
         return
             [
-                'disconnect' => SSH2Connection::disconnectCallback(),
+                'disconnect' => [$this, 'disconnectCallback'],
+                'ignore' => [$this, 'debugCallback'],
+                'macerror' => [$this, 'debugCallback'],
+                'debug' => [$this, 'debugCallback'],
             ];
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PHPssh2 (https://github.com/tezmanian/PHP-ssh)
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
  * @copyright Copyright (c) 2016-2019 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
@@ -45,7 +45,7 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
      * @param string $pubkeyfile
      * @param string|null $passphrase
      */
-    public function __construct(string $username, string $keyfile, string $pubkeyfile, string $passphrase = null)
+    public function __construct(string $username = null, string $keyfile = null, string $pubkeyfile = null, string $passphrase = null)
     {
         parent::__construct($username);
         $this->setKeyfile($keyfile);
@@ -89,9 +89,14 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
      * get public key file
      *
      * @return string
+     * @throws SSH2AuthenticationException
      */
     protected function getPubKeyFile(): string
     {
+        if (empty($this->_pubkeyfile) || is_null($this->_pubkeyfile))
+        {
+            throw new SSH2AuthenticationException('Missing public key path');
+        }
         return $this->_pubkeyfile;
     }
 
@@ -111,9 +116,14 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
      * get private key file
      *
      * @return string
+     * @throws SSH2AuthenticationException
      */
     protected function getKeyFile(): string
     {
+        if (empty($this->_keyfile) || is_null($this->_keyfile))
+        {
+            throw new SSH2AuthenticationException('Missing private key path');
+        }
         return $this->_keyfile;
     }
 
@@ -122,7 +132,7 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
      * @param string $keyfile
      * @return SSH2AuthPrivPubKeyFile
      */
-    public function setKeyFile(string $keyfile): SSH2AuthPrivPubKeyFile
+    public function setKeyFile(string $keyfile = null): SSH2AuthPrivPubKeyFile
     {
         $this->_keyfile = $keyfile;
         return $this;

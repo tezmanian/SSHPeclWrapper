@@ -9,17 +9,18 @@
 
 namespace Tez\PHPssh2\Exception;
 
-use Exception;
+
 use Throwable;
 
 /**
- * Class SSH2Exception
+ * Class SFTPException
  * @package Tez\PHPssh2\Exception
  */
-class SSH2Exception extends Exception
+class SFTPException extends SSH2Exception
 {
+
     /**
-     * SSH2Exception constructor.
+     * SFTPException constructor.
      * @param string $message
      * @param int $code
      * @param Throwable|null $previous

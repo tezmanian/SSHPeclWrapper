@@ -38,10 +38,11 @@ namespace TezTest\PHPssh2\Connection
         }
 
         /**
-         * @expectedException SSH2ConnectionException
+         * @expectedException \Tez\PHPssh2\Exception\SSH2ConnectionException
          */
         public function testEmptyHost()
         {
+
             $conn = new SSH2Connection();
             $conn->getHost();
         }

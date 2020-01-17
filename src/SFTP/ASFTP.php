@@ -17,6 +17,27 @@ use Tez\PHPssh2\ISSH2Resource;
 class ASFTP implements ISSH2Resource
 {
 
+    private static $rights = [
+        'user' => [
+            'r' => 0x0100,
+            'w' => 0x0080,
+            'x' => 0x0040,
+            's' => 0x0800,
+        ],
+        'group' => [
+            'r' => 0x0020,
+            'w' => 0x0010,
+            'x' => 0x0008,
+            's' => 0x0400,
+        ],
+        'other' => [
+            'r' => 0x0004,
+            'w' => 0x0002,
+            'x' => 0x0001,
+            's' => 0x0200,
+        ],
+    ];
+
     /**
      * @var array | null
      */
@@ -45,13 +66,13 @@ class ASFTP implements ISSH2Resource
     public function setSSH2Connection(ISSH2 $ssh2): void
     {
         $this->_ssh2 = $ssh2;
-        $this->connectSFTP();
+        $this->connect();
     }
 
     /**
      * connect to sftp server
      */
-    private function connectSFTP()
+    private function connect()
     {
         $this->_sftp = ssh2_sftp($this->_ssh2->getConnection());
     }
@@ -119,6 +140,15 @@ class ASFTP implements ISSH2Resource
             (($perms & 0x0200) ? 't' : 'x') :
             (($perms & 0x0200) ? 'T' : '-'));
 
+        return $info;
+    }
+
+    private function _getRights($perms): string
+    {
+        $info = '';
+        $info .= (($perms & 0x0100) ? 'r' : '-');
+        $info .= (($perms & 0x0080) ? 'w' : '-');
+        $info .= (($perms & 0x0040) ? (($perms & 0x0800) ? 's' : 'x') : (($perms & 0x0800) ? 'S' : '-'));
         return $info;
     }
 
@@ -285,4 +315,10 @@ class ASFTP implements ISSH2Resource
     {
         return ($path == '/');
     }
+
+    public function quit(): void
+    {
+        $this->_sftp = null;
+    }
+
 }

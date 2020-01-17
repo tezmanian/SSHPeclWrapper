@@ -20,4 +20,9 @@ interface ISSH2ConnectionResource
      * Returns the SSH2Connection
      */
     public function getConnection();
+
+    /**
+     * disconnect a active session
+     */
+    public function disconnect(): void;
 }

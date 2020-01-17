@@ -51,6 +51,7 @@ class SSH2Connection implements ISSH2Connection
      */
     public function disconnectCallback($reason, $message, $language)
     {
+        unset($language);
         throw new SSH2ConnectionException(sprintf("Server disconnected with reason code [%d] and message: %s\n", $reason, $message));
     }
 
@@ -63,6 +64,7 @@ class SSH2Connection implements ISSH2Connection
      */
     public function debugCallback($reason, $message, $language)
     {
+        unset($language);
         error_log(sprintf("Debug: code [%d] and message: %s\n", $reason, $message));
     }
 

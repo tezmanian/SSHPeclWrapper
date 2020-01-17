@@ -51,4 +51,15 @@ class SSH2ConnectionResource implements ISSH2ConnectionResource
         return $this->_resource;
     }
 
+    /**
+     * disconnect connection
+     */
+    public function disconnect(): void
+    {
+        if (false === is_null($this->_resource))
+        {
+            ssh2_disconnect($this->_resource);
+        }
+    }
+
 }

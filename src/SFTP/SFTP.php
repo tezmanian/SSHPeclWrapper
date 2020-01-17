@@ -207,6 +207,17 @@ class SFTP extends ASFTP implements ISFTP, ISSH2Resource
     }
 
     /**
+     * wrapper for delete
+     *
+     * @param string $path
+     * @throws SFTPException
+     */
+    public function rm(string $path): void
+    {
+        $this->delete($path);
+    }
+
+    /**
      * returns size of remote file.
      *
      * @param string $path

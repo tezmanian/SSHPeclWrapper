@@ -1,7 +1,14 @@
 {
   "name": "tez/php-ssh",
-  "description": "SSH Library",
+  "version": "1.0",
+  "description": "SSH2 wrapper for pecl libssh2 library",
   "type": "library",
+  "keywords": [
+    "ssh",
+    "sftp",
+    "pecl",
+    "libssh"
+  ],
   "authors": [
     {
       "name": "René Halberstadt",

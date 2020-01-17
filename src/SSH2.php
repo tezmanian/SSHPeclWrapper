@@ -84,6 +84,11 @@ class SSH2 implements ISSH2
         return $this->_connectionResource;
     }
 
+    public function disconnect(): void
+    {
+        $this->getConnectionResource()->disconnect();
+    }
+
     /**
      * returns the ssh2 connection
      *

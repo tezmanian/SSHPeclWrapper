@@ -12,36 +12,14 @@ namespace Tez\PHPssh2\SFTP;
 
 use Tez\PHPssh2\Exception\SFTPException;
 use Tez\PHPssh2\ISSH2;
-use Tez\PHPssh2\ISSH2Resource;
 
-class ASFTP implements ISSH2Resource
+abstract class ASFTP implements ISFTPResource
 {
-
-    private static $rights = [
-        'user' => [
-            'r' => 0x0100,
-            'w' => 0x0080,
-            'x' => 0x0040,
-            's' => 0x0800,
-        ],
-        'group' => [
-            'r' => 0x0020,
-            'w' => 0x0010,
-            'x' => 0x0008,
-            's' => 0x0400,
-        ],
-        'other' => [
-            'r' => 0x0004,
-            'w' => 0x0002,
-            'x' => 0x0001,
-            's' => 0x0200,
-        ],
-    ];
 
     /**
      * @var array | null
      */
-    protected $_pwd = null;
+    protected $_pwd = [];
     /**
      * @var ISSH2
      */
@@ -61,95 +39,31 @@ class ASFTP implements ISSH2Resource
     }
 
     /**
-     * @param ISSH2 $ssh2
+     * @inheritDoc
      */
     public function setSSH2Connection(ISSH2 $ssh2): void
     {
         $this->_ssh2 = $ssh2;
-        $this->connect();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSSH2Connection(): ISSH2
+    {
+        return $this->_ssh2;
     }
 
     /**
      * connect to sftp server
-     */
-    private function connect()
-    {
-        $this->_sftp = ssh2_sftp($this->_ssh2->getConnection());
-    }
-
-    /**
-     * returns human readable file permissons.
      *
-     * @param int $perms
-     * @return string
+     * @return ISFTP
      */
-    protected function _fileperms($perms): string
+    public function connect(): ISFTP
     {
-        if (($perms & 0xC000) == 0xC000)
-        {
-            // Socket
-            $info = 's';
-        } else if (($perms & 0xA000) == 0xA000)
-        {
-            // Symbolischer Link
-            $info = 'l';
-        } else if (($perms & 0x8000) == 0x8000)
-        {
-            // Regulär
-            $info = '-';
-        } else if (($perms & 0x6000) == 0x6000)
-        {
-            // Block special
-            $info = 'b';
-        } else if (($perms & 0x4000) == 0x4000)
-        {
-            // Verzeichnis
-            $info = 'd';
-        } else if (($perms & 0x2000) == 0x2000)
-        {
-            // Character special
-            $info = 'c';
-        } else if (($perms & 0x1000) == 0x1000)
-        {
-            // FIFO pipe
-            $info = 'p';
-        } else
-        {
-            // Unknown
-            $info = 'u';
-        }
-
-// Besitzer
-        $info .= (($perms & 0x0100) ? 'r' : '-');
-        $info .= (($perms & 0x0080) ? 'w' : '-');
-        $info .= (($perms & 0x0040) ?
-            (($perms & 0x0800) ? 's' : 'x') :
-            (($perms & 0x0800) ? 'S' : '-'));
-
-// Gruppe
-        $info .= (($perms & 0x0020) ? 'r' : '-');
-        $info .= (($perms & 0x0010) ? 'w' : '-');
-        $info .= (($perms & 0x0008) ?
-            (($perms & 0x0400) ? 's' : 'x') :
-            (($perms & 0x0400) ? 'S' : '-'));
-
-// Andere
-        $info .= (($perms & 0x0004) ? 'r' : '-');
-        $info .= (($perms & 0x0002) ? 'w' : '-');
-        $info .= (($perms & 0x0001) ?
-            (($perms & 0x0200) ? 't' : 'x') :
-            (($perms & 0x0200) ? 'T' : '-'));
-
-        return $info;
-    }
-
-    private function _getRights($perms): string
-    {
-        $info = '';
-        $info .= (($perms & 0x0100) ? 'r' : '-');
-        $info .= (($perms & 0x0080) ? 'w' : '-');
-        $info .= (($perms & 0x0040) ? (($perms & 0x0800) ? 's' : 'x') : (($perms & 0x0800) ? 'S' : '-'));
-        return $info;
+        $this->_sftp = ssh2_sftp($this->getSSH2Connection()->getConnection());
+        $this->pwd();
+        return $this;
     }
 
     /**
@@ -206,14 +120,6 @@ class ASFTP implements ISSH2Resource
     }
 
     /**
-     * @return resource
-     */
-    protected function _getSSH2Resource()
-    {
-        return $this->_ssh2->getConnection();
-    }
-
-    /**
      * get remote directory information.
      *
      * @param string $path
@@ -258,7 +164,7 @@ class ASFTP implements ISSH2Resource
      * @param string $path
      * @return string
      */
-    protected function _getPath(string $path): string
+    public function _getPath(string $path): string
     {
         $split = explode("/", $path);
         $pwd = $this->_pwd;
@@ -316,9 +222,19 @@ class ASFTP implements ISSH2Resource
         return ($path == '/');
     }
 
+    /**
+     * disconnect SFTP connection, not SSH2 connection
+     */
     public function quit(): void
     {
         $this->_sftp = null;
+        $this->_pwd = [];
     }
 
+    /**
+     * returns actual the pwd
+     *
+     * @return string
+     */
+    abstract public function pwd(): string;
 }

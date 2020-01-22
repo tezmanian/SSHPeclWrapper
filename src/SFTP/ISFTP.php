@@ -151,4 +151,11 @@ interface ISFTP
      * @throws SFTPException
      */
     public function is_dir($path): bool;
+
+    /**
+     * returns extended functions
+     *
+     * @return ISFTPExtended
+     */
+    public function getExtended(): ISFTPExtended;
 }

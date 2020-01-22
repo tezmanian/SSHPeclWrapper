@@ -27,7 +27,6 @@ namespace TezTest\PHPssh2
     use Tez\PHPssh2\ISSH2;
     use Tez\PHPssh2\SCP\ISCP;
     use Tez\PHPssh2\SFTP\SFTP;
-    use Tez\PHPssh2\SFTP\SFTPExtended;
     use Tez\PHPssh2\SSH2;
 
     class SSH2Test extends TestCase
@@ -70,16 +69,6 @@ namespace TezTest\PHPssh2
         {
             $sftp = $this->mockSSH2()->getSFTP();
             $this->assertInstanceOf(SFTP::class, $sftp);
-        }
-
-        /**
-         * @throws SSH2AuthenticationException
-         * @throws SSH2Exception
-         */
-        public function testGetSFTPExtended()
-        {
-            $sftp = $this->mockSSH2()->getSFTPExtended();
-            $this->assertInstanceOf(SFTPExtended::class, $sftp);
         }
 
         /**

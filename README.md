@@ -12,7 +12,7 @@ $conn = new \Tez\PHPssh2\Connection\SSH2Connection('localhost');
 
 $ssh2 = new \Tez\PHPssh2\SSH2($conn, $auth);
 
-$sftp = $ssh2->getSFTP();
+$sftp = $ssh2->getSFTP()->connect();
 
 $pwd = $sftp->pwd();
 ```

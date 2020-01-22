@@ -11,13 +11,13 @@ namespace Tez\PHPssh2\SFTP;
 
 use Tez\PHPssh2\Exception\SFTPException;
 use Tez\PHPssh2\ISSH2;
-use Tez\PHPssh2\ISSH2Resource;
+use Tez\PHPssh2\Tools\PermissionCalculator;
 
 /**
  * Class SFTP
  * @package Tez\PHPssh2
  */
-class SFTP extends ASFTP implements ISFTP, ISSH2Resource
+class SFTP extends ASFTP implements ISFTP
 {
 
     public function __construct(ISSH2 $ssh2)
@@ -171,7 +171,7 @@ class SFTP extends ASFTP implements ISFTP, ISSH2Resource
                 }
             }
             $_stat['path'] = $_entry;
-            $_stat['mode_readable'] = $this->_fileperms($_stat['mode']);
+            $_stat['mode_readable'] = PermissionCalculator::getPermissions($_stat['mode']);
             $_stat['mtime_readable'] = $this->_timeStampToDate($_stat['mtime']);
             $_stat['atime_readable'] = $this->_timeStampToDate($_stat['atime']);
             $_dir[] = $_stat;
@@ -215,6 +215,29 @@ class SFTP extends ASFTP implements ISFTP, ISSH2Resource
     public function rm(string $path): void
     {
         $this->delete($path);
+    }
+
+    /**
+     * @param string $path
+     * @param bool $recursive
+     * @return bool
+     * @throws SFTPException
+     */
+    public function rmdir(string $path, bool $recursive = false): bool
+    {
+
+        if ($recursive) {
+            foreach ($this->ls($path) as $file) {
+                $full = $path . '/' . $file;
+                if ($this->is_dir($file)) {
+                    $this->rmdir($full, true);
+                } else {
+                    $this->rm($full);
+                }
+            }
+        }
+
+        return ssh2_sftp_rmdir($this->_getSFTPResource(), $this->_getPath($path));
     }
 
     /**
@@ -345,4 +368,13 @@ class SFTP extends ASFTP implements ISFTP, ISSH2Resource
         }
     }
 
+    /**
+     * returns extended functions
+     *
+     * @return ISFTPExtended
+     */
+    public function getExtended(): ISFTPExtended
+    {
+        return new SFTPExtended($this);
+    }
 }

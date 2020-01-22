@@ -12,7 +12,7 @@ namespace Tez\PHPssh2\SFTP;
 
 use Tez\PHPssh2\Exception\SFTPException;
 
-interface ISFTPExtended extends ISFTP
+interface ISFTPExtended
 {
 
     /**

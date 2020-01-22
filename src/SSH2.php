@@ -15,10 +15,8 @@ use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2Exception;
 use Tez\PHPssh2\SCP\ISCP;
 use Tez\PHPssh2\SCP\SCP;
-use Tez\PHPssh2\SFTP\ISFTP;
-use Tez\PHPssh2\SFTP\ISFTPExtended;
+use Tez\PHPssh2\SFTP\ISFTPResource;
 use Tez\PHPssh2\SFTP\SFTP;
-use Tez\PHPssh2\SFTP\SFTPExtended;
 
 /**
  * Class SSH2
@@ -101,9 +99,9 @@ class SSH2 implements ISSH2
 
     /**
      * returns a SFTP connection
-     * @return ISFTP
+     * @return ISFTPResource
      */
-    public function getSFTP(): ISFTP
+    public function getSFTP(): ISFTPResource
     {
         return new SFTP($this->getSSH2());
     }
@@ -111,11 +109,6 @@ class SSH2 implements ISSH2
     private function getSSH2(): ISSH2
     {
         return $this;
-    }
-
-    public function getSFTPExtended(): ISFTPExtended
-    {
-        return new SFTPExtended($this->getSSH2());
     }
 
     public function getSCP(): ISCP

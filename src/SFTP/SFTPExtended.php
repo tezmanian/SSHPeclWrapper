@@ -11,14 +11,14 @@ namespace Tez\PHPssh2\SFTP;
 
 
 use Tez\PHPssh2\Exception\SFTPException;
-use Tez\PHPssh2\ISSH2;
 
-class SFTPExtended extends SFTP implements ISFTPExtended
+class SFTPExtended implements ISFTPExtended
 {
+    private $sftp = null;
 
-    public function __construct(ISSH2 $ssh2)
+    public function __construct(ASFTP $sftp)
     {
-        parent::__construct($ssh2);
+        $this->sftp = $sftp;
     }
 
 
@@ -32,7 +32,7 @@ class SFTPExtended extends SFTP implements ISFTPExtended
      */
     public function chgrp(string $path, string $group): void
     {
-        if (false === ($stream = ssh2_exec($this->_getSSH2Resource(), sprintf('chgrp %s %s', $group, $this->_getPath($path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('chgrp %s %s', $group, $this->sftp->_getPath($path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }
@@ -55,7 +55,7 @@ class SFTPExtended extends SFTP implements ISFTPExtended
      */
     public function chown(string $path, string $owner): void
     {
-        if (false === ($stream = ssh2_exec($this->_getSSH2Resource(), sprintf('chown %s %s', $owner, $this->_getPath($path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('chown %s %s', $owner, $this->sftp->_getPath($path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }
@@ -84,7 +84,7 @@ class SFTPExtended extends SFTP implements ISFTPExtended
         {
             $_options = sprintf("%s -s", $_options);
         }
-        if (false === ($stream = ssh2_exec($this->_getSSH2Resource(), sprintf('ln %s %s %s', $_options, $this->_getPath($org_path), $this->_getPath($new_path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('ln %s %s %s', $_options, $this->sftp->_getPath($org_path), $this->sftp->_getPath($new_path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }

@@ -16,9 +16,9 @@ use Tez\PHPssh2\ISSH2Resource;
 class SCP implements ISSH2Resource, ISCP
 {
     /**
-     * @var resource
+     * @var ISSH2
      */
-    private $_ssh2resource;
+    private $_ssh2;
 
     /**
      * SCP constructor.
@@ -34,7 +34,15 @@ class SCP implements ISSH2Resource, ISCP
      */
     public function setSSH2Connection(ISSH2 $ssh2): void
     {
-        $this->_ssh2resource = $ssh2->getConnection();
+        $this->_ssh2 = $ssh2;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSSH2Connection(): ISSH2
+    {
+        return $this->_ssh2;
     }
 
     /**
@@ -55,7 +63,7 @@ class SCP implements ISSH2Resource, ISCP
             $mode = (int)octdec($mode);
         }
 
-        return ssh2_scp_send($this->_ssh2resource, $local, $remote, $mode);
+        return ssh2_scp_send($this->_ssh2->getConnection(), $local, $remote, $mode);
     }
 
 
@@ -68,6 +76,6 @@ class SCP implements ISSH2Resource, ISCP
      */
     public function recv(string $remote, string $local): bool
     {
-        return ssh2_scp_recv($this->_ssh2resource, $remote, $local);
+        return ssh2_scp_recv($this->_ssh2->getConnection(), $remote, $local);
     }
 }

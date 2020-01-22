@@ -17,7 +17,14 @@ namespace Tez\PHPssh2;
 interface ISSH2Resource
 {
     /**
+     * set ssh2 connection
      * @param ISSH2 $ssh2
      */
     public function setSSH2Connection(ISSH2 $ssh2): void;
+
+    /**
+     * get used ssh2 connection
+     * @return ISSH2
+     */
+    public function getSSH2Connection(): ISSH2;
 }

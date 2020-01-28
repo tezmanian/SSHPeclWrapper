@@ -1,10 +1,12 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2\SFTP;
@@ -47,6 +49,18 @@ abstract class ASFTP implements ISFTPResource
     }
 
     /**
+     * connect to sftp server
+     *
+     * @return ISFTP
+     */
+    public function connect(): ISFTP
+    {
+        $this->_sftp = ssh2_sftp($this->getSSH2Connection()->getConnectionResource()->getSession());
+        $this->pwd();
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getSSH2Connection(): ISSH2
@@ -55,15 +69,19 @@ abstract class ASFTP implements ISFTPResource
     }
 
     /**
-     * connect to sftp server
+     * returns actual the pwd
      *
-     * @return ISFTP
+     * @return string
      */
-    public function connect(): ISFTP
+    abstract public function pwd(): string;
+
+    /**
+     * disconnect SFTP connection, not SSH2 connection
+     */
+    public function quit(): void
     {
-        $this->_sftp = ssh2_sftp($this->getSSH2Connection()->getConnection());
-        $this->pwd();
-        return $this;
+        $this->_sftp = null;
+        $this->_pwd = [];
     }
 
     /**
@@ -221,20 +239,4 @@ abstract class ASFTP implements ISFTPResource
     {
         return ($path == '/');
     }
-
-    /**
-     * disconnect SFTP connection, not SSH2 connection
-     */
-    public function quit(): void
-    {
-        $this->_sftp = null;
-        $this->_pwd = [];
-    }
-
-    /**
-     * returns actual the pwd
-     *
-     * @return string
-     */
-    abstract public function pwd(): string;
 }

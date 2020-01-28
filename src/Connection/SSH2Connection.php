@@ -1,10 +1,12 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2\Connection;
@@ -76,13 +78,12 @@ class SSH2Connection implements ISSH2Connection
     public function connect(): ISSH2ConnectionResource
     {
 
-
         if (false === ($connection = ssh2_connect($this->getHost(), $this->getPort(), ISSH2Connection::METHODS, $this->getCallbacks())))
         {
             throw new SSH2ConnectionException(sprintf("could not establish ssh connection to server %s at port %d", $this->getHost(), $this->getPort()));
         }
 
-        return new SSH2ConnectionResource($connection);
+        return new SSH2ConnectionResource($connection, $this->getHost());
     }
 
     /**

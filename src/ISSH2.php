@@ -1,16 +1,18 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2;
 
-use Tez\PHPssh2\Auth\ISSH2Credentials;
 use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
+use Tez\PHPssh2\Credentials\ISSH2Credentials;
 use Tez\PHPssh2\SCP\ISCP;
 use Tez\PHPssh2\SFTP\ISFTPResource;
 
@@ -26,11 +28,6 @@ interface ISSH2
      * @return ISSH2
      */
     public function authentication(ISSH2Credentials $credentials): ISSH2;
-
-    /**
-     * @return resource
-     */
-    public function getConnection();
 
     /**
      * returns a ISSH2ConnectionResource

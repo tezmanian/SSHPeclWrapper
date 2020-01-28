@@ -1,13 +1,15 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
-namespace Tez\PHPssh2\Auth;
+namespace Tez\PHPssh2\Credentials;
 
 use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
 use Tez\PHPssh2\Exception\SSH2AuthenticationException;
@@ -73,10 +75,10 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
     {
         if (is_null($this->_passphrase) || empty($this->_passphrase))
         {
-            $auth = ssh2_auth_pubkey_file($connection->getConnection(), $this->getUsername(), $this->getPubKeyFile(), $this->getKeyFile());
+            $auth = ssh2_auth_pubkey_file($connection->getSession(), $this->getUsername(), $this->getPubKeyFile(), $this->getKeyFile());
         } else
         {
-            $auth = ssh2_auth_pubkey_file($connection->getConnection(), $this->getUsername(), $this->getPubKeyFile(), $this->getKeyFile(), $this->_passphrase);
+            $auth = ssh2_auth_pubkey_file($connection->getSession(), $this->getUsername(), $this->getPubKeyFile(), $this->getKeyFile(), $this->_passphrase);
         }
 
         if ($auth !== true)
@@ -96,6 +98,10 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
         if (empty($this->_pubkeyfile) || is_null($this->_pubkeyfile))
         {
             throw new SSH2AuthenticationException('Missing public key path');
+        }
+
+        if (!file_exists($this->_pubkeyfile)) {
+            throw new SSH2AuthenticationException('Public key files does not exist.');
         }
         return $this->_pubkeyfile;
     }
@@ -123,6 +129,10 @@ class SSH2AuthPrivPubKeyFile extends SSH2AuthNone
         if (empty($this->_keyfile) || is_null($this->_keyfile))
         {
             throw new SSH2AuthenticationException('Missing private key path');
+        }
+
+        if (!file_exists($this->_keyfile)) {
+            throw new SSH2AuthenticationException('Key file does not exist.');
         }
         return $this->_keyfile;
     }

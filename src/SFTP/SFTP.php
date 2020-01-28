@@ -1,10 +1,12 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2\SFTP;
@@ -23,27 +25,6 @@ class SFTP extends ASFTP implements ISFTP
     public function __construct(ISSH2 $ssh2)
     {
         parent::__construct($ssh2);
-    }
-
-    /**
-     * returns the listing of a given remote directory.
-     *
-     * @param string $path
-     * @return array
-     * @throws SFTPException
-     */
-    public function ls(string $path = ''): array
-    {
-        $_dir = $this->_dir($path);
-
-        foreach ($_dir as $_key => $_entry)
-        {
-            if (substr("$_entry", 0, 1) == ".")
-            {
-                unset($_dir[$_key]);
-            }
-        }
-        return array_values($_dir);
     }
 
     /**
@@ -193,31 +174,6 @@ class SFTP extends ASFTP implements ISFTP
     }
 
     /**
-     * delete remote file.
-     *
-     * @param string $path
-     * @throws SFTPException
-     */
-    public function delete(string $path): void
-    {
-        if (!ssh2_sftp_unlink($this->_getSFTPResource(), $this->_getPath($path)))
-        {
-            throw new SFTPException('could not delete path');
-        }
-    }
-
-    /**
-     * wrapper for delete
-     *
-     * @param string $path
-     * @throws SFTPException
-     */
-    public function rm(string $path): void
-    {
-        $this->delete($path);
-    }
-
-    /**
      * @param string $path
      * @param bool $recursive
      * @return bool
@@ -238,6 +194,61 @@ class SFTP extends ASFTP implements ISFTP
         }
 
         return ssh2_sftp_rmdir($this->_getSFTPResource(), $this->_getPath($path));
+    }
+
+    /**
+     * returns the listing of a given remote directory.
+     *
+     * @param string $path
+     * @return array
+     * @throws SFTPException
+     */
+    public function ls(string $path = ''): array
+    {
+        $_dir = $this->_dir($path);
+
+        foreach ($_dir as $_key => $_entry) {
+            if (substr("$_entry", 0, 1) == ".") {
+                unset($_dir[$_key]);
+            }
+        }
+        return array_values($_dir);
+    }
+
+    /**
+     * check if path is directory
+     *
+     * @param $path
+     * @return bool
+     * @throws SFTPException
+     */
+    public function is_dir($path): bool
+    {
+        return ($this->_isRoot($path)) ? true : is_dir($this->_sftpGetPath($path));
+    }
+
+    /**
+     * wrapper for delete
+     *
+     * @param string $path
+     * @throws SFTPException
+     */
+    public function rm(string $path): void
+    {
+        $this->delete($path);
+    }
+
+    /**
+     * delete remote file.
+     *
+     * @param string $path
+     * @throws SFTPException
+     */
+    public function delete(string $path): void
+    {
+        if (!ssh2_sftp_unlink($this->_getSFTPResource(), $this->_getPath($path))) {
+            throw new SFTPException('could not delete path');
+        }
     }
 
     /**
@@ -331,18 +342,6 @@ class SFTP extends ASFTP implements ISFTP
             }
         }
         return $this->pwd();
-    }
-
-    /**
-     * check if path is directory
-     *
-     * @param $path
-     * @return bool
-     * @throws SFTPException
-     */
-    public function is_dir($path): bool
-    {
-        return ($this->_isRoot($path)) ? true : is_dir($this->_sftpGetPath($path));
     }
 
     /**

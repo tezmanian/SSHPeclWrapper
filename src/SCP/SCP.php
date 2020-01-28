@@ -1,10 +1,12 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2\SCP;
@@ -63,7 +65,7 @@ class SCP implements ISSH2Resource, ISCP
             $mode = (int)octdec($mode);
         }
 
-        return ssh2_scp_send($this->_ssh2->getConnection(), $local, $remote, $mode);
+        return ssh2_scp_send($this->_ssh2->getConnectionResource()->getSession(), $local, $remote, $mode);
     }
 
 
@@ -76,6 +78,6 @@ class SCP implements ISSH2Resource, ISCP
      */
     public function recv(string $remote, string $local): bool
     {
-        return ssh2_scp_recv($this->_ssh2->getConnection(), $remote, $local);
+        return ssh2_scp_recv($this->_ssh2->getConnectionResource()->getSession(), $remote, $local);
     }
 }

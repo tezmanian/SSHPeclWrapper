@@ -1,18 +1,21 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2;
 
-use Tez\PHPssh2\Auth\ISSH2Credentials;
 use Tez\PHPssh2\Connection\ISSH2Connection;
 use Tez\PHPssh2\Connection\ISSH2ConnectionResource;
+use Tez\PHPssh2\Credentials\ISSH2Credentials;
 use Tez\PHPssh2\Exception\SSH2Exception;
+use Tez\PHPssh2\FingerPrint\ISSH2FingerPrint;
 use Tez\PHPssh2\SCP\ISCP;
 use Tez\PHPssh2\SCP\SCP;
 use Tez\PHPssh2\SFTP\ISFTPResource;
@@ -36,13 +39,19 @@ class SSH2 implements ISSH2
      *
      * @param ISSH2Connection $connection
      * @param ISSH2Credentials $credentials
+     * @param ISSH2FingerPrint|null $fingerPrint
      * @throws Exception\SSH2AuthenticationException
+     * @throws Exception\SSH2ConnectionException
      * @throws SSH2Exception
      */
-    public function __construct(ISSH2Connection $connection, ISSH2Credentials $credentials)
+    public function __construct(ISSH2Connection $connection, ISSH2Credentials $credentials, ISSH2FingerPrint $fingerPrint = null)
     {
         $this->_checkSSH2Extension();
         $this->_connectionResource = $connection->connect();
+        if ($fingerPrint instanceof ISSH2FingerPrint) {
+            $fingerPrint->setISSH2ConnectionResource($this->_connectionResource);
+            $fingerPrint->checkFingerPrint();
+        }
         $this->authentication($credentials);
     }
 
@@ -85,16 +94,6 @@ class SSH2 implements ISSH2
     public function disconnect(): void
     {
         $this->getConnectionResource()->disconnect();
-    }
-
-    /**
-     * returns the ssh2 connection
-     *
-     * @return resource
-     */
-    public function getConnection()
-    {
-        return $this->_connectionResource->getConnection();
     }
 
     /**

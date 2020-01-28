@@ -1,10 +1,12 @@
 <?php
 
 /**
+ *
  * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
  *
- * @copyright Copyright (c) 2016-2019 René Halberstadt
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
  * @license   https://opensource.org/licenses/Apache-2.0
+ *
  */
 
 namespace Tez\PHPssh2\SFTP;
@@ -32,7 +34,7 @@ class SFTPExtended implements ISFTPExtended
      */
     public function chgrp(string $path, string $group): void
     {
-        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('chgrp %s %s', $group, $this->sftp->_getPath($path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnectionResource()->getSession(), sprintf('chgrp %s %s', $group, $this->sftp->_getPath($path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }
@@ -55,7 +57,7 @@ class SFTPExtended implements ISFTPExtended
      */
     public function chown(string $path, string $owner): void
     {
-        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('chown %s %s', $owner, $this->sftp->_getPath($path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnectionResource()->getSession(), sprintf('chown %s %s', $owner, $this->sftp->_getPath($path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }
@@ -84,7 +86,7 @@ class SFTPExtended implements ISFTPExtended
         {
             $_options = sprintf("%s -s", $_options);
         }
-        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnection(), sprintf('ln %s %s %s', $_options, $this->sftp->_getPath($org_path), $this->sftp->_getPath($new_path)))))
+        if (false === ($stream = ssh2_exec($this->sftp->getSSH2Connection()->getConnectionResource()->getSession(), sprintf('ln %s %s %s', $_options, $this->sftp->_getPath($org_path), $this->sftp->_getPath($new_path)))))
         {
             throw new SFTPException("could not execute SSH command.");
         }

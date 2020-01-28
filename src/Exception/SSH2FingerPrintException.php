@@ -14,7 +14,7 @@ namespace Tez\PHPssh2\Exception;
 
 use Throwable;
 
-class SSH2AuthenticationUsernameException extends SSH2AuthenticationException
+class SSH2FingerPrintException extends SSH2Exception
 {
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {

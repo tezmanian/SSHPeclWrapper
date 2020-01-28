@@ -1,5 +1,13 @@
 <?php
 
+/**
+ *
+ * PHPssh2 (https://github.com/tezmanian/SSHPeclWrapper)
+ *
+ * @copyright Copyright (c) 2016 - 2020 René Halberstadt
+ * @license   https://opensource.org/licenses/Apache-2.0
+ *
+ */
 
 namespace Tez\PHPssh2\Tools;
 
@@ -35,7 +43,7 @@ class PermissionCalculator
         'b' => 0x6000,
         'd' => 0x4000,
         'c' => 0x2000,
-        'p' => 0x1000
+        'p' => 0x1000,
     ];
 
     /**
